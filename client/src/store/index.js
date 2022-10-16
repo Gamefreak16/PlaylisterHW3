@@ -169,8 +169,8 @@ export const useGlobalStore = () => {
             }
             case GlobalStoreActionType.MOVED_SONG: {
                 return setStore({
-                    idNamePairs: store.idNamePairs,
-                    currentList: payload,
+                    idNamePairs: payload,
+                    currentList: store.currentList,
                     newListCounter: store.newListCounter,
                     listNameActive: false,
                     markedPair: null
@@ -372,14 +372,16 @@ export const useGlobalStore = () => {
     // start TO end AND ADJUSTS ALL OTHER ITEMS ACCORDINGLY
     store.moveSong= (start, end) => {
         let list = store.currentList;
-
+        console.log(store.currentList.songs[0] === undefined);
         // WE NEED TO UPDATE THE STATE FOR THE APP
-        start -= 1;
-        end -= 1;
+        // start += 0;
+        // end += 0;
         if (start < end) {
             let temp = list.songs[start];
             for (let i = start; i < end; i++) {
+                console.log("Before", i, i+1)
                 list.songs[i] = list.songs[i + 1];
+                console.log("After", list.songs[i])
             }
             list.songs[end] = temp;
         }
@@ -390,33 +392,32 @@ export const useGlobalStore = () => {
             }
             list.songs[end] = temp;
         }
-        
-        // async function updateList(playlist) {
-        //     response = await api.updatePlaylistById(playlist._id, playlist);
-        //     if (response.data.success) {
-        //         async function getListPairs(playlist) {
-        //             response = await api.getPlaylistPairs();
-        //             if (response.data.success) {
-        //                 let pairsArray = response.data.idNamePairs;
-        //                 storeReducer({
-        //                     type: GlobalStoreActionType.CHANGE_LIST_NAME,
-        //                     payload: {
-        //                         idNamePairs: pairsArray,
-        //                         playlist: playlist
-        //                     }
-        //                 });
-        //             }
-        //         }
-        //         getListPairs(playlist);
-        //     }
-        // }
-        // updateList(list);
+        console.log(store.currentList.songs[0] === undefined);
+        async function updateList(playlist) {
+            let response = await api.updatePlaylistById(playlist._id, playlist);
+            if (response.data.success) {
+                async function getListPairs(playlist) {
+                    response = await api.getPlaylistPairs();
+                    if (response.data.success) {
+                        let pairsArray = response.data.idNamePairs;
+                        storeReducer({
+                            type: GlobalStoreActionType.MOVED_SONG,
+                            payload: pairsArray
+                        });
+                    }
+                }
+                getListPairs(playlist);
+            }
+        }
+        updateList(list);
         
     }
     // THIS FUNCTION ADDS A MoveSong_Transaction TO THE TRANSACTION STACK
     store.addMoveSongTransaction = (start, end) => {
-        let transaction = new MoveSong_Transaction(this, start, end);
-        this.tps.addTransaction(transaction);
+        console.log(store.currentList);
+        console.log(store.currentList.songs[0] === undefined);
+        let transaction = new MoveSong_Transaction(store, start, end);
+        tps.addTransaction(transaction);
     }
 
 

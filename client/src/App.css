@@ -100,6 +100,7 @@ body {
 .playlister-button-disabled {
   opacity: 0.25; 
   cursor: not-allowed;
+  background-color: lightgray;
 }
 
 #playlister-statusbar {
@@ -151,6 +152,25 @@ body {
 .list-card-button {
   float:right;
   font-size:18pt;
+}
+
+.playlister-song, .playlister-song-dragged-to { 
+  
+  font-size: 18pt;
+  margin: 10px;
+  padding: 25px;
+  border-radius: 25px;
+  height: min-content;
+}
+
+.playlister-song {
+  background-color: var(--swatch-complement);
+}
+
+.playlister-song:hover {
+  cursor: pointer;
+  background-color: var(--swatch-contrast);
+  color:white;
 }
 
 input {
