@@ -1,6 +1,10 @@
 import { createContext, useState } from 'react'
 import jsTPS from '../common/jsTPS'
 import api from '../api'
+import MoveSong_Transaction from '../transactions/MoveSong_Transaction.js';
+import DeleteSong_Transaction from '../transactions/DeleteSong_Transaction';
+import AddSong_Transaction from '../transactions/AddSong_Transaction';
+import EditSong_Transaction from '../transactions/EditSong_Transaction';
 export const GlobalStoreContext = createContext({});
 /*
     This is our global data store. Note that it uses the Flux design pattern,
@@ -226,7 +230,6 @@ export const useGlobalStore = () => {
             }
         }
         asyncDeleteMark();
-
     }
 
     store.showDeleteListModal = function () {
@@ -242,6 +245,29 @@ export const useGlobalStore = () => {
             payload:null
         });
     }
+
+    store.addAddSongTransaction = () => {
+        let transaction = new AddSong_Transaction();
+        this.tps.addTransaction(transaction);
+    }
+
+    store.addAddSongTransaction = (songTitle, songArtist, songId, songIndex) => {
+        let setIndex = songIndex;
+        if(setIndex === undefined) setIndex = store.getPlaylistSize();
+        let transaction = new AddSong_Transaction(songTitle, songArtist, songId, setIndex);
+        this.tps.addTransaction(transaction);
+    }
+
+
+    store.addSong = function (){
+
+
+
+    }
+
+
+
+
     store.showDeleteSongModal = function () {
         let modal = document.getElementById("delete-song-modal");
         modal.classList.add("is-visible");
@@ -259,6 +285,14 @@ export const useGlobalStore = () => {
     store.hideEditSongModal=function() {
         let modal = document.getElementById("edit-song-modal");
         modal.classList.remove("is-visible");
+    }
+
+    store.hasUndo = function(){
+        return tps.hasTransactionToUndo();
+    }
+
+    store.hasRedo = function(){
+        return tps.hasTransactionToRedo();
     }
 
 
