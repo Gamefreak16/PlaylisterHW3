@@ -13,5 +13,6 @@ router.get('/playlist/:id', PlaylistController.getPlaylistById)
 router.get('/playlists', PlaylistController.getPlaylists)
 router.get('/playlistpairs', PlaylistController.getPlaylistPairs)
 router.put('/updatePlaylist', PlaylistController.updatePlaylistById)
+router.delete('/playlistDel/:id', PlaylistController.deletePlaylist)
 
 module.exports = router
