@@ -26,7 +26,7 @@ createPlaylist = (req, res) => {
     playlist
         .save()
         .then(() => {
-            return res.status(201).json({
+            return res.status(200).json({
                 success: true,
                 playlist: playlist,
                 message: 'Playlist Created!',
@@ -38,6 +38,14 @@ createPlaylist = (req, res) => {
                 message: 'Playlist Not Created!',
             })
         })
+}
+updatePlaylistById = async (req, res) => {
+    const replacement = new Playlist(req.body.newList);
+    await Playlist.replaceOne({ _id: req.body.id }, replacement).catch(err => console.log(err));
+    return res.status(200).json({
+        success: true,
+        playlist: replacement
+    })
 }
 getPlaylistById = async (req, res) => {
     await Playlist.findOne({ _id: req.params.id }, (err, list) => {
@@ -87,9 +95,13 @@ getPlaylistPairs = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
+
+
+
 module.exports = {
     createPlaylist,
     getPlaylists,
     getPlaylistPairs,
-    getPlaylistById
+    getPlaylistById,
+    updatePlaylistById
 }
