@@ -28,6 +28,9 @@ const ListSelector = () => {
             />
         ))
     }
+    let cname = "playlister-button"
+    if(store.listNameActive){cname += "-disabled"; }
+
     return (
         <div id="playlist-selector">
             <div id="list-selector-list">
@@ -35,8 +38,9 @@ const ListSelector = () => {
                 <input
                     type="button"
                     id="add-list-button"
+                    disabled={store.listNameActive}
                     onClick={handleCreateNewList}
-                    className="playlister-button"
+                    className={cname}
                     value="+" />
                 Your Lists
             </div>                {

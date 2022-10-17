@@ -39,10 +39,10 @@ function EditToolbar() {
     let undoClass = "playlister-button";
     let redoClass = "playlister-button";
     let closeClass = "playlister-button";
-    if (!canAddSong) addSongClass += " .disabled";
-    if (!canUndo) undoClass += " .disabled";
-    if (!canRedo) redoClass += " .disabled";
-    if (!canClose) closeClass += " .disabled";
+    if (!canAddSong) addSongClass += "-disabled";
+    if (!canUndo) undoClass += "-disabled";
+    if (!canRedo) redoClass += "-disabled";
+    if (!canClose) closeClass += "-disabled";
 
 
     return (

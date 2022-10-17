@@ -132,6 +132,7 @@ export const useGlobalStore = () => {
             }
             // START EDITING A LIST NAME
             case GlobalStoreActionType.SET_LIST_NAME_EDIT_ACTIVE: {
+                console.log("hereo")
                 return setStore({
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
