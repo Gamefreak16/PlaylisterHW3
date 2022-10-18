@@ -5,16 +5,21 @@ function EditSongModal () {
     const { store } = useContext(GlobalStoreContext);
 
     function editSong(event) {
-        let newTitle = document.getElementById("editTitle").value; 
-        let newArtist = document.getElementById("editArtist").value;
-        let newYou = document.getElementById("editId").value;
-        this.props.editSongCallback(newTitle, newArtist, newYou);
+        let oldSong = store.currentList.songs[store.markedSong];
+        let newSong = {title: document.getElementById("editTitle").value, 
+            artist: document.getElementById("editArtist").value, 
+            youTubeId: document.getElementById("editId").value}
+        store.addEditSongTransaction(oldSong, newSong, store.markedSong);
     }
 
     function handleCancel(event){
         store.hideEditSongModal()
     }    
-        
+     
+    let song = {title:"", artist:"", youTubeId:""};
+    if(store.currentList && store.markedSong !== null){
+        song = store.currentList.songs[store.markedSong]
+    }
 
     return (
         <div  
@@ -42,7 +47,7 @@ function EditSongModal () {
                             class="edit-input" 
                             type="text" 
                             id="editTitle"
-                            defaultValue={""}></input><br></br>
+                            defaultValue={song.title}></input><br></br>
                         <label 
                             for="editArtist" 
                             class="edit-labels"
@@ -52,7 +57,7 @@ function EditSongModal () {
                             class="edit-input" 
                             type="text" 
                             id="editArtist"
-                            defaultValue={""}></input><br></br>
+                            defaultValue={song.artist}></input><br></br>
                         <label 
                             for="editId" 
                             class="edit-labels"
@@ -62,7 +67,7 @@ function EditSongModal () {
                         class="edit-input" 
                         type="text" 
                         id="editId"
-                        defaultValue={""}></input><br></br>
+                        defaultValue={song.youTubeId}></input><br></br>
                         
                     </div>
                 </div>

@@ -375,6 +375,7 @@ export const useGlobalStore = () => {
         if(setIndex === undefined) setIndex = store.getPlaylistSize();
         let transaction = new DeleteSong_Transaction(store, songTitle, songArtist, songId, setIndex);
         tps.addTransaction(transaction);
+        store.hideDeleteSongModal()
     }
 
     store.deleteSong = (index) => {
@@ -395,7 +396,7 @@ export const useGlobalStore = () => {
                             type: GlobalStoreActionType.DELETED_SONG,
                             payload: pairsArray
                         });
-                        store.hideDeleteSongModal()
+                        
                     }
                 }
                 getListPairs(playlist);
@@ -416,6 +417,47 @@ export const useGlobalStore = () => {
     }
 
 
+    store.editSong = (newTitle, newArtist, newYoutube, newIndex) =>{
+        let list = store.currentList;
+        if(store.currentList){
+            let temp = {};
+            if(newTitle !== undefined && newTitle !== "") temp.title = newTitle;
+            else temp.title = "Untitled";
+            if(newArtist !== undefined && newArtist !== "") temp.artist = newArtist;
+            else temp.artist = "Unknown";
+            if(newYoutube !== undefined && newYoutube !== "") temp.youTubeId = newYoutube;
+            else temp.youTubeId = "dQw4w9WgXcQ";
+            list.songs.splice(newIndex, 1, temp); 
+        }
+
+        async function updateList(playlist) {
+            let response = await api.updatePlaylistById(playlist._id, playlist);
+            if (response.data.success) {
+                async function getListPairs(playlist) {
+                    response = await api.getPlaylistPairs();
+                    if (response.data.success) {
+                        let pairsArray = response.data.idNamePairs;
+                        storeReducer({
+                            type: GlobalStoreActionType.EDITED_SONG,
+                            payload: pairsArray
+                        });
+                        
+                    }
+                }
+                getListPairs(playlist);
+            }
+        }
+        updateList(list);
+
+    }
+
+
+
+    store.addEditSongTransaction = (oldSong, newSong, index) => {
+        let transaction = new EditSong_Transaction(store, oldSong, newSong, index);
+        tps.addTransaction(transaction);
+        store.hideEditSongModal()
+    }
 
 
 

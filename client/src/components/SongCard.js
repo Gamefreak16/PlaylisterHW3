@@ -63,6 +63,13 @@ function SongCard(props) {
         store.showDeleteSongModal();
     }
 
+    function provokeEdit(event){
+        if(event.detail === 2){
+            store.markSong(index);
+            store.showEditSongModal();
+        }
+    }
+
     return (
         <div
             key={index}
@@ -74,6 +81,7 @@ function SongCard(props) {
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             draggable="true"
+            onClick={provokeEdit}
         >
             {index + 1}.
             <a

@@ -7,6 +7,7 @@ import jsTPS_Transaction from "../common/jsTPS.js"
 export default class EditSong_Transaction extends jsTPS_Transaction {
     constructor(initStore, initOldSong, initNewSong, initId) {
         super();
+        console.log(initOldSong, initNewSong,initId)
         this.store = initStore;
         this.oldTitle = initOldSong.title;
         this.oldArtist = initOldSong.artist;
