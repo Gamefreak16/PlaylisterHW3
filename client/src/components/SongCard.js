@@ -11,11 +11,7 @@ function SongCard(props) {
     let cardClass = "list-card unselected-list-card ";
 
     function handleDragStart(event) {
-        console.log(store.currentList);
-        console.log(store.currentList.songs[0] === undefined);
         event.dataTransfer.setData("song", event.target.id);
-        console.log(store.currentList);
-        console.log(store.currentList.songs[0] === undefined);
         
         setDragging(true);
         //setTo(draggedTo);
@@ -46,7 +42,6 @@ function SongCard(props) {
     }
     function handleDrop(event) {
         event.preventDefault();
-        console.log(store.currentList);
         let target = event.target;
         let targetId = target.id;
         targetId = targetId.substring(target.id.indexOf("-") + 1);
@@ -56,7 +51,6 @@ function SongCard(props) {
         sourceId = sourceId.substring(0, sourceId.indexOf("-"));
         setDragging(false);
         setTo(false);
-        console.log(store.currentList.songs[0] === undefined);
         // ASK THE MODEL TO MOVE THE DATA
         sourceId = parseInt(sourceId);
         targetId = parseInt(targetId);
@@ -64,9 +58,9 @@ function SongCard(props) {
     }
 
     function handleDelete(event){
-        //event.stopPropagation();
-        //this.props.deleteSongCallback(this.getItemNum()-1);
-        
+        event.stopPropagation();
+        store.markSong(index);
+        store.showDeleteSongModal();
     }
 
     return (
@@ -93,6 +87,7 @@ function SongCard(props) {
                 id={"remove-song-" + index}
                 className="list-card-button"
                 value={"\u2715"}
+                onClick={handleDelete}
             />
         </div>
     );
